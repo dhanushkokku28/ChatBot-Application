@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { loginUser, registerUser } from "@/lib/api";
+import { getFacebookAuthUrl, getGoogleAuthUrl, loginUser, registerUser } from "@/lib/api";
 import type { AuthSession } from "@/types/chat";
 
 type AuthMode = "login" | "register";
@@ -46,6 +46,14 @@ export default function AuthPanel({ onAuthenticated }: AuthPanelProps) {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function handleGoogleLogin() {
+    window.location.assign(getGoogleAuthUrl());
+  }
+
+  function handleFacebookLogin() {
+    window.location.assign(getFacebookAuthUrl());
   }
 
   return (
@@ -113,6 +121,23 @@ export default function AuthPanel({ onAuthenticated }: AuthPanelProps) {
         >
           {isLoading ? "Please wait..." : mode === "login" ? "Login" : "Register"}
         </button>
+
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+          >
+            Google
+          </button>
+          <button
+            type="button"
+            onClick={handleFacebookLogin}
+            className="rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50"
+          >
+            Facebook
+          </button>
+        </div>
       </form>
     </section>
   );

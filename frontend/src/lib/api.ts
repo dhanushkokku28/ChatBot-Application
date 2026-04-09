@@ -1,4 +1,4 @@
-import { STRAPI_URL } from "@/lib/config";
+import { APP_URL, STRAPI_URL } from "@/lib/config";
 import type { AuthSession, ChatMessage } from "@/types/chat";
 
 type StrapiCollectionResponse<T> = {
@@ -113,6 +113,40 @@ export async function loginUser(
       id: payload.user.id,
       username: payload.user.username,
     },
+  };
+}
+
+export function getGoogleAuthUrl(): string {
+  const callbackUrl = `${APP_URL}/auth/google/callback`;
+  const query = new URLSearchParams({
+    redirect: callbackUrl,
+  });
+
+  return `${STRAPI_URL}/api/connect/google?${query.toString()}`;
+}
+
+export function getFacebookAuthUrl(): string {
+  const callbackUrl = `${APP_URL}/auth/facebook/callback`;
+  const query = new URLSearchParams({
+    redirect: callbackUrl,
+  });
+
+  return `${STRAPI_URL}/api/connect/facebook?${query.toString()}`;
+}
+
+export async function getCurrentUser(jwt: string): Promise<AuthSession["user"]> {
+  const response = await fetch(`${STRAPI_URL}/api/users/me`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+    cache: "no-store",
+  });
+
+  const payload = await readJsonResponse<{ id: number; username: string }>(response);
+
+  return {
+    id: payload.id,
+    username: payload.username,
   };
 }
 

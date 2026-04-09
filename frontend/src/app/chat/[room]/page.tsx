@@ -39,7 +39,7 @@ export default function ChatRoomPage() {
 
   return (
     <main className="min-h-screen bg-[linear-gradient(135deg,#f8fafc_0%,#eff6ff_40%,#fff7ed_100%)] px-4 py-6 sm:px-8 sm:py-8">
-      <div className="mx-auto mb-5 flex w-full max-w-6xl items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 shadow-sm backdrop-blur sm:px-5">
+      <div className="mx-auto mb-5 flex w-full max-w-7xl items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 shadow-sm backdrop-blur sm:px-5">
         <div className="flex items-center gap-3">
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-sky-900 text-sm font-black text-white">
             SC

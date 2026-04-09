@@ -112,7 +112,7 @@ export default function ChatRoom({ room, jwt, username }: ChatRoomProps) {
   }
 
   return (
-    <section className="mx-auto grid w-full max-w-6xl gap-4 lg:grid-cols-[1fr_280px]">
+    <section className="mx-auto grid w-full max-w-7xl gap-4 lg:grid-cols-[1fr_320px]">
       <div className="rounded-3xl border border-slate-200 bg-white/95 p-4 shadow-[0_30px_80px_-45px_rgba(2,6,23,0.65)] sm:p-6">
         <header className="mb-4 flex items-center justify-between border-b border-slate-200 pb-3">
           <div>
@@ -126,7 +126,7 @@ export default function ChatRoom({ room, jwt, username }: ChatRoomProps) {
           </span>
         </header>
 
-        <div className="h-[420px] space-y-3 overflow-y-auto rounded-2xl bg-slate-50/90 p-3 sm:p-4">
+        <div className="h-[460px] space-y-3 overflow-y-auto rounded-2xl bg-slate-50/90 p-3 sm:h-[520px] sm:p-4 lg:h-[62vh]">
           {sortedMessages.length === 0 ? (
             <p className="text-sm text-slate-500">No messages yet. Send the first one.</p>
           ) : (

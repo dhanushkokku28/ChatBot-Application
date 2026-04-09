@@ -45,6 +45,16 @@ export default function Home() {
     router.push(`/chat/${encodeURIComponent(safeRoom)}`);
   }
 
+  function handleCreateRoom() {
+    const safeRoom = room.trim().toLowerCase();
+
+    if (!safeRoom) {
+      return;
+    }
+
+    router.push(`/chat/${encodeURIComponent(safeRoom)}`);
+  }
+
   return (
     <main className="relative min-h-screen overflow-hidden px-4 py-8 sm:px-8 sm:py-10">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_10%_20%,rgba(56,189,248,0.18),transparent_45%),radial-gradient(circle_at_82%_15%,rgba(6,182,212,0.16),transparent_40%),linear-gradient(135deg,#f8fbff_0%,#ecfeff_52%,#eef8ff_100%)]" />
@@ -75,6 +85,7 @@ export default function Home() {
             username={session.user.username}
             onRoomChange={setRoom}
             onJoin={handleJoinRoom}
+            onCreate={handleCreateRoom}
           />
         )}
       </div>

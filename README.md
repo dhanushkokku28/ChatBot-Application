@@ -9,6 +9,8 @@ This repository contains the full-stack assignment implementation:
 ## Implemented Features
 
 - Username/password registration and login (Strapi users-permissions auth).
+- Google OAuth login (Strapi provider + frontend callback flow).
+- Facebook OAuth login (Strapi provider + frontend callback flow).
 - Room-based chat with dynamic route (`/chat/[room]`).
 - Real-time message delivery using Socket.io and webhook bridge.
 - Active users list per room from Socket.io presence tracking.
@@ -37,6 +39,34 @@ npm run develop
 
 This starts Strapi on `http://localhost:1337`.
 
+### Configure Google OAuth
+
+1. Create an OAuth Client in Google Cloud Console (Web application).
+2. Note your Google Project ID if you want it for console tracking, but the app does not use it directly.
+3. Add this authorized redirect URI:
+  - `http://localhost:1337/api/connect/google/callback`
+4. Put credentials in `backend/.env`:
+  - `GOOGLE_CLIENT_ID=...`
+  - `GOOGLE_CLIENT_SECRET=...`
+5. Ensure frontend callback URL remains `http://localhost:3000/auth/google/callback`.
+
+Google and Facebook OAuth buttons.
+
+### Configure Facebook OAuth
+
+1. Create an App in [Facebook Developers Console](https://developers.facebook.com/).
+2. Add `Facebook Login` product to the app.
+3. Under App Settings > Basic, get **App ID** and **App Secret**.
+4. Add this authorized redirect URI in Facebook Login settings:
+  - `http://localhost:1337/api/connect/facebook/callback`
+5. Put credentials in `backend/.env`:
+  - `FACEBOOK_APP_ID=...`
+  - `FACEBOOK_APP_SECRET=...`
+6. Ensure frontend callback URL remains `http://localhost:3000/auth/facebook/callback`.
+
+After restarting Strapi, the login page allows `Continue with Facebook
+After restarting Strapi, the login page includes `Continue with Google`.
+
 ### Create admin user
 
 On first run, Strapi asks for an admin account in browser.
@@ -48,6 +78,8 @@ In Strapi Admin:
 1. Open `Settings -> Users & Permissions Plugin -> Roles -> Authenticated`.
 2. Under `Chat Message`, enable `find` and `create`.
 3. Save.
+
+Note: this project also auto-enables these two permissions at bootstrap for convenience.
 
 ### Configure webhook to Socket relay
 
@@ -81,8 +113,9 @@ Open a third terminal:
 cd frontend
 cp .env.example .env.local
 npm install
-npm run dev
-```
+npm run dev with social auth buttons.
+- `frontend/src/app/auth/google/callback/page.tsx` - completes Google OAuth by reading token and storing session.
+- `frontend/src/app/auth/facebook/callback/page.tsx` - completes Facebook
 
 Frontend runs on `http://localhost:3000`.
 
@@ -96,6 +129,7 @@ Frontend runs on `http://localhost:3000`.
 ## Code Structure
 
 - `frontend/src/components/AuthPanel.tsx` - registration/login component.
+- `frontend/src/app/auth/google/callback/page.tsx` - completes Google OAuth by reading token and storing session.
 - `frontend/src/components/RoomJoinPanel.tsx` - room selection interface.
 - `frontend/src/components/ChatRoom.tsx` - chat room shell, socket and data handling.
 - `frontend/src/components/ChatMessageItem.tsx` - individual message component.
@@ -108,5 +142,6 @@ Frontend runs on `http://localhost:3000`.
 ## Notes
 
 - Registration uses Strapi's auth model and auto-generates a local email from username because Strapi registration requires email by default.
+- Google login uses Strapi provider endpoints (`/api/connect/google`) and redirects through frontend callback.
 - Database is SQLite (quickstart default), so message history is persisted locally in backend data files.
 - If webhook auth token changes, update both `backend/.env` and Strapi webhook header.
